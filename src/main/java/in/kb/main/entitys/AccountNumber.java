@@ -5,6 +5,7 @@ import jdk.jfr.Timestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table
@@ -12,7 +13,7 @@ public class AccountNumber {
 
     @Id
      @GeneratedValue (strategy = GenerationType.IDENTITY)
-  private int customerId;
+  private int accountNumberId;
 
     @Column(unique = true)
  private long accountNumber;
@@ -30,16 +31,27 @@ private  String status;
     @Column(nullable = false)
   private LocalDate openingDate;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "fk_customer_Id")
     private Customer customer;
 
-    public int getCustomerId() {
-        return customerId;
+    @OneToMany(mappedBy = "BankAccount", cascade = CascadeType.ALL)
+    private List<Transactions> transactionsList;
+
+    public List<Transactions> getTransactionsList() {
+        return transactionsList;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setTransactionsList(List<Transactions> transactionsList) {
+        this.transactionsList = transactionsList;
+    }
+
+    public int getAccountNumberId() {
+        return accountNumberId;
+    }
+
+    public void setAccountNumberId(int accountNumberId) {
+        this.accountNumberId = accountNumberId;
     }
 
     public long getAccountNumber() {

@@ -5,6 +5,7 @@ import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table
@@ -40,8 +41,8 @@ public class Customer {
     @Column
     private LocalDate createAtTime;
 
-    @OneToOne(mappedBy = "customer")
-    private AccountNumber accountNumber;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<AccountNumber> accountNumber;
 
 
     public int getCustomerId() {
@@ -116,11 +117,11 @@ public class Customer {
         this.createAtTime = createAtTime;
     }
 
-    public AccountNumber getAccountNumber() {
+    public List<AccountNumber> getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(AccountNumber accountNumber) {
+    public void setAccountNumber(List<AccountNumber> accountNumber) {
         this.accountNumber = accountNumber;
     }
 }
