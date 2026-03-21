@@ -2,11 +2,19 @@ package in.kb.main.entitys;
 
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table
 public class Customer {
@@ -14,7 +22,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private int customerId;
+    private Integer customerId;
 
     @Column(nullable = false)
     private String firstName;
@@ -43,5 +51,5 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<AccountNumber> accountNumber;
-    
+
 }
