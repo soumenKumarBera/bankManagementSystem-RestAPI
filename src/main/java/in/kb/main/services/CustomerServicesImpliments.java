@@ -3,6 +3,8 @@ package in.kb.main.services;
 import in.kb.main.dto.CustomerDto;
 import in.kb.main.entitys.AccountNumber;
 import in.kb.main.entitys.Customer;
+import in.kb.main.enums.AccountType;
+import in.kb.main.enums.Status;
 import in.kb.main.reproserty.AccountRepository;
 import in.kb.main.reproserty.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,9 +50,9 @@ public class CustomerServicesImpliments implements CustomerServices{
 
         AccountNumber accountNumber = AccountNumber.builder()
                 .accountNumber(accNumber)
-                .accountType("Saving")
+                .accountType(AccountType.SavingAccount)
                 .balance(BigDecimal.valueOf(0.0))
-                .status("Active")
+                .status(Status.Active)
                 .openingDate(LocalDate.now())
                 .customer(customer)
                 .build();

@@ -3,6 +3,8 @@ package in.kb.main.dto;
 import in.kb.main.entitys.AccountNumber;
 import in.kb.main.entitys.Customer;
 import in.kb.main.entitys.Transactions;
+import in.kb.main.enums.AccountType;
+import in.kb.main.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +24,9 @@ public class AccountDto {
 
     private Integer accountNumberId;
     private long accountNumber;
-    private String accountType;
+    private AccountType accountType;
     private BigDecimal balance;
-    private  String status;
+    private Status status;
     private LocalDate openingDate;
 
 
