@@ -12,7 +12,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandelar {
 
-    @ExceptionHandler({RuntimeException.class, AccountNotFountException.class, AccountCloseException.class})
+    @ExceptionHandler({RuntimeException.class, AccountNotFountException.class, AccountCloseException.class, InvalidAmountException.class, InsufficientBlanceException.class})
     public ResponseEntity<Map<String, Object>> exceptionHandelar(Exception exception){
         Map<String, Object> list = new HashMap<>();
         list.put("status", HttpStatus.BAD_REQUEST.value());

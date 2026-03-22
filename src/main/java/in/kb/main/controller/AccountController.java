@@ -5,10 +5,9 @@ import in.kb.main.services.AccountServicesImpliments;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +22,13 @@ public class AccountController {
         return  ResponseEntity.ok().body(accountDto);
 
     }
+
+    @PostMapping("withdraw")
+    public ResponseEntity<?> withdrawApi(@RequestParam long accNumber, @RequestParam BigDecimal amount ){
+
+        String result = accountServicesImpliments.withDrawAmount(accNumber,amount);
+
+        return ResponseEntity.ok().body(result);
+    }
+
 }

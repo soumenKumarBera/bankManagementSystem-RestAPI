@@ -1,11 +1,20 @@
 package in.kb.main.entitys;
 
+import in.kb.main.enums.TransactionType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
 @Entity
 @Table
 public class Transactions {
@@ -18,8 +27,9 @@ public class Transactions {
     @Column
     private long accountNumber;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String tranctionType;
+    private TransactionType transactionType;
 
     @Column(nullable = false)
     private BigDecimal amount;
@@ -28,8 +38,8 @@ public class Transactions {
     @Column
     private LocalDate transactionDate;
 
-    @Column
-    private long relativeAccountNumber;
+    @Column()
+    private long relativeAccountNumber  ;
 
     @Column
     private String description;
@@ -40,67 +50,4 @@ public class Transactions {
 
 
 
-    public int getTransactionsId() {
-        return transactionsId;
-    }
-
-    public void setTransactionsId(int transactionsId) {
-        this.transactionsId = transactionsId;
-    }
-
-    public long getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(long accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public String getTranctionType() {
-        return tranctionType;
-    }
-
-    public void setTranctionType(String tranctionType) {
-        this.tranctionType = tranctionType;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public LocalDate getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(LocalDate transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    public long getRelativeAccountNumber() {
-        return relativeAccountNumber;
-    }
-
-    public void setRelativeAccountNumber(long relativeAccountNumber) {
-        this.relativeAccountNumber = relativeAccountNumber;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public AccountNumber getBankAccount() {
-        return BankAccount;
-    }
-
-    public void setBankAccount(AccountNumber bankAccount) {
-        BankAccount = bankAccount;
-    }
 }
