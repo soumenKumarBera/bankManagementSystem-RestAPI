@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -145,5 +146,62 @@ public class AccountServicesImpliments implements  AccountServices {
 
 
         return "WithDrawal succesful!\n" + "Amount: ₹ "+amount + "\nReceipt generated!";
+    }
+
+    @Override
+    public String depositAmount(long accNumber, BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) < 0){
+            throw new InvalidAmountException("Unable to initiate transaction due to nagetive amount input");
+        } else if (amount.compareTo(BigDecimal.ZERO) == 0) {
+            throw  new InvalidAmountException("Unable to initiate transaction. Enter amount grater than 0.");
+
+        }else {
+            AccountNumber bankAccount = accountRepository.findByaccountNumber(accNumber);
+            if (bankAccount == null){
+                throw new AccountNotFountException("Invalid bank Account number entered.");
+            }
+            if (bankAccount.getStatus() == Status.Closed ){
+                throw new AccountCloseException("Account alredy closed..");
+            }
+
+            BigDecimal storeAmount = bankAccount.getBalance().add(amount);
+
+            AccountNumber account = AccountNumber.builder()
+                    .accountNumberId(bankAccount.getAccountNumberId())
+                    .accountNumber(bankAccount.getAccountNumber())
+                    .accountType(bankAccount.getAccountType())
+                    .balance(storeAmount)
+                    .openingDate(bankAccount.getOpeningDate())
+                    .customer(bankAccount.getCustomer())
+                    .status(bankAccount.getStatus())
+                    .build();
+
+            try {
+                accountRepository.save(account);
+            } catch (RuntimeException e) {
+                throw new RuntimeException(e);
+            }
+
+            Transactions transactions = Transactions.builder()
+                    .accountNumber(account.getAccountNumber())
+                    .amount(amount)
+                    .transactionType(TransactionType.Deposit)
+                    .transactionDate(LocalDate.now() )
+                    .description("Deposit Succesfull")
+                    .BankAccount(account)
+                    .build();
+
+            try{
+                transactionRepository.save(transactions);
+                ReceiptGenerator.generatrReceipt(transactions);
+            } catch (RuntimeException | IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+
+
+        return "Deposit succesful!\n" + "Amount: ₹ "+amount + "\nReceipt generated!";
     }
 }

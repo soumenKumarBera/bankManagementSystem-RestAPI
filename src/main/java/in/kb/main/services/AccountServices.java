@@ -14,4 +14,6 @@ public interface AccountServices {
     public AccountDto closeAccount(long accNumber);
 
     public String withDrawAmount(long accNumber, BigDecimal amount);
+
+    public  String depositAmount(long accNumber, BigDecimal amount);
 }

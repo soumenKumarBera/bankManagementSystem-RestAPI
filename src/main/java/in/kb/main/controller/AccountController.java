@@ -31,4 +31,11 @@ public class AccountController {
         return ResponseEntity.ok().body(result);
     }
 
+    @PostMapping("/deposit")
+    public ResponseEntity<?> depositAmpount(@RequestParam long accNumber, @RequestParam BigDecimal amount){
+        String result = accountServicesImpliments.depositAmount(accNumber,amount);
+        return  ResponseEntity.ok().body(result);
+
+    }
+
 }
