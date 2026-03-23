@@ -2,10 +2,7 @@ package in.kb.main.entitys;
 
 import in.kb.main.enums.TransactionType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -39,7 +36,7 @@ public class Transactions {
     private LocalDate transactionDate;
 
     @Column()
-    private long relativeAccountNumber  ;
+    private Long relativeAccountNumber  ;
 
     @Column
     private String description;

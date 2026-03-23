@@ -11,12 +11,14 @@ import in.kb.main.exception.AccountCloseException;
 import in.kb.main.exception.AccountNotFountException;
 import in.kb.main.exception.InsufficientBlanceException;
 import in.kb.main.exception.InvalidAmountException;
+import in.kb.main.receipts.ReceiptGenerator;
 import in.kb.main.reproserty.AccountRepository;
 import in.kb.main.reproserty.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -123,13 +125,15 @@ public class AccountServicesImpliments implements  AccountServices {
                     .amount(amount)
                     .transactionType(TransactionType.Withdrawl)
                     .transactionDate(LocalDate.now())
-                    .description("Succesfull")
+                    .description("Withdrawal Succesfull")
                     .BankAccount(account)
                     .build();
 
+
             try{
                 transactionRepository.save(transactions);
-            } catch (RuntimeException e) {
+                ReceiptGenerator.generatrReceipt(transactions);
+            } catch (RuntimeException | IOException e) {
                 throw new RuntimeException(e);
             }
 
@@ -140,6 +144,6 @@ public class AccountServicesImpliments implements  AccountServices {
 
 
 
-        return "WithDrawAmount: " + amount;
+        return "WithDrawal succesful!\n" + "Amount: ₹ "+amount + "\nReceipt generated!";
     }
 }

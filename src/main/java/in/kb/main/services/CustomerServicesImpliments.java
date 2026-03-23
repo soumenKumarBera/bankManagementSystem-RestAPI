@@ -26,7 +26,7 @@ public class CustomerServicesImpliments implements CustomerServices{
     long accNumber = (long)(Math.random() *1000000000000l) +1 ;
 
     @Override
-    public CustomerDto creatCustomer(CustomerDto customerDto) {
+    public String creatCustomer(CustomerDto customerDto) {
         Customer customer = Customer.builder()
                 .firstName(customerDto.getFirstName())
                 .lastName(customerDto.getLastName())
@@ -67,18 +67,20 @@ public class CustomerServicesImpliments implements CustomerServices{
             throw new RuntimeException(" Failed to create account.. ");
         }
 
+        return "Your AccountNumber: "+ accNumber;
 
-        return CustomerDto.builder()
-                .customerId(customer.getCustomerId())
-                .firstName(customer.getFirstName())
-                .lastName(customer.getLastName())
-                .email(customer.getEmail())
-                .phoneNumber(customer.getPhoneNumber())
-                .panNumber(customer.getPanNumber())
-                .aadres(customer.getAadres())
-                .aadharNumber(customer.getAadharNumber())
-                .createAtTime(customer.getCreateAtTime())
-                .build();
+
+//        return CustomerDto.builder()
+//                .customerId(customer.getCustomerId())
+//                .firstName(customer.getFirstName())
+//                .lastName(customer.getLastName())
+//                .email(customer.getEmail())
+//                .phoneNumber(customer.getPhoneNumber())
+//                .panNumber(customer.getPanNumber())
+//                .aadres(customer.getAadres())
+//                .aadharNumber(customer.getAadharNumber())
+//                .createAtTime(customer.getCreateAtTime())
+//                .build();
     }
 
 

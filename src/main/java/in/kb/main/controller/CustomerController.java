@@ -19,10 +19,10 @@ public class CustomerController {
 
     @PostMapping("/createAccount")
     public ResponseEntity<?> createCustomrPage(@RequestBody CustomerDto customerDto ){
-       CustomerDto customer= customerServicesImpliments.creatCustomer(customerDto);
+       String accNumber = customerServicesImpliments.creatCustomer(customerDto);
 
 
-      return ResponseEntity.ok().body(customer);
+      return ResponseEntity.ok().body(accNumber);
 
     }
 }

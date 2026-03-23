@@ -5,6 +5,6 @@ import in.kb.main.entitys.Customer;
 
 public interface CustomerServices {
 
-    public CustomerDto creatCustomer(CustomerDto customerDto);
+    public String creatCustomer(CustomerDto customerDto);
 
 }
