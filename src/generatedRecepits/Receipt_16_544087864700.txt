@@ -1,0 +1,9 @@
+=============== KB BANK ===============
+Transection Type          : Transfer
+Transaction Id            : 16
+Your's Account number    : 544087864700
+Receiver's account number: 160986331393
+Amount                    : 1000
+Date & Time              : 2026-03-23 & 23:38:06
+Drescription             : Withdrawal from account for transfer
+=========================================

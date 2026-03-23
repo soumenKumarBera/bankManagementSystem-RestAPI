@@ -1,0 +1,8 @@
+=============== KB BANK ===============
+Transection Type         : Deposit
+Transaction Id           : 20
+Account Number           : 918442995389
+Amount                   : 500
+Date & Time              : 2026-03-23 & 23:51:17
+Drescription             : Deposit Succesfull
+=========================================

@@ -1,0 +1,9 @@
+=============== KB BANK ===============
+Transection Type         : Transfer
+Transaction Id           : 19
+Your's Account number    : 160986331393
+Sender's account number  : 544087864700
+Amount                   : 1000
+Date & Time              : 2026-03-23 & 23:41:40
+Drescription             : deposit to account via transfer
+=========================================
