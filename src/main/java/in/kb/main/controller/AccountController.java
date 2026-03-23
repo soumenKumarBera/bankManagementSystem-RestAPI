@@ -38,4 +38,10 @@ public class AccountController {
 
     }
 
+    @PostMapping("/transfer")
+    public ResponseEntity<?> moneyTransfer( @RequestParam long debitAccNumber, @RequestParam long creditAccNumber,@RequestParam BigDecimal amount){
+        String result = accountServicesImpliments.transfer(debitAccNumber,creditAccNumber,amount);
+        return  ResponseEntity.ok().body(result);
+    }
+
 }

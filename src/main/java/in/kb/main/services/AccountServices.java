@@ -16,4 +16,8 @@ public interface AccountServices {
     public String withDrawAmount(long accNumber, BigDecimal amount);
 
     public  String depositAmount(long accNumber, BigDecimal amount);
+
+    public String transfer(long debitAccNumber, long creditAccNumber, BigDecimal amount);
+
+
 }

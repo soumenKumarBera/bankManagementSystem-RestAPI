@@ -14,9 +14,12 @@ import in.kb.main.exception.InvalidAmountException;
 import in.kb.main.receipts.ReceiptGenerator;
 import in.kb.main.reproserty.AccountRepository;
 import in.kb.main.reproserty.TransactionRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -204,4 +207,120 @@ public class AccountServicesImpliments implements  AccountServices {
 
         return "Deposit succesful!\n" + "Amount: ₹ "+amount + "\nReceipt generated!";
     }
+
+    @Transactional
+    @Override
+    public String transfer(long debitAccNumber, long creditAccNumber, BigDecimal amount) {
+
+        if (amount.compareTo(BigDecimal.ZERO) < 0){
+            throw new InvalidAmountException("Unable to initiate transaction due to nagetive amount input");
+        } else if (amount.compareTo(BigDecimal.ZERO) == 0) {
+            throw  new InvalidAmountException("Unable to initiate transaction. Enter amount grater than 0.");
+
+        }else{
+            AccountNumber from = accountRepository.findByaccountNumber(debitAccNumber);
+            AccountNumber to = accountRepository.findByaccountNumber(creditAccNumber);
+
+            if (from == null && to == null){
+                throw new AccountNotFountException("Invalid bank Account number entered.");
+            }
+            if (from.getStatus() == Status.Closed && to.getStatus() == Status.Closed){
+                throw new AccountCloseException("Account alredy closed..");
+
+            }
+
+            double overdraftLimt = 0;
+            BigDecimal currentAccountBalance = from.getBalance();
+
+             if (from.getAccountType() == AccountType.CurrentAccount){
+                 overdraftLimt = -5000;
+             }
+
+             if(currentAccountBalance.subtract(amount).compareTo(BigDecimal.ZERO) < overdraftLimt){
+
+                 throw  new InvalidAmountException("Withdrawal amount the permitted limits.\nCannot initiate Transaction.");
+
+             }else {
+
+                 from.setBalance(from.getBalance().subtract(amount));
+                 AccountNumber fromBankAccount =  AccountNumber.builder()
+                         .accountNumberId(from.getAccountNumberId())
+                         .accountNumber(from.getAccountNumber())
+                         .accountType(from.getAccountType())
+                         .balance(from.getBalance())
+                         .openingDate(from.getOpeningDate())
+                         .customer(from.getCustomer())
+                         .status(from.getStatus())
+                         .build();
+
+                 try{
+                     //Account table update
+                     fromBankAccount = accountRepository.save(fromBankAccount);
+                 } catch (RuntimeException e) {
+                     throw new RuntimeException(e);
+                 }
+
+                 to.setBalance(to.getBalance().add(amount));
+
+                 AccountNumber toBankAccount = AccountNumber.builder()
+                         .accountNumberId(to.getAccountNumberId())
+                         .accountNumber(to.getAccountNumber())
+                         .accountType(to.getAccountType())
+                         .balance(to.getBalance())
+                         .openingDate(to.getOpeningDate())
+                         .customer(to.getCustomer())
+                         .status(to.getStatus())
+                         .build();
+                 try {
+                   toBankAccount =  accountRepository.save(toBankAccount);
+                 } catch (RuntimeException e) {
+                     throw new RuntimeException(e);
+                 }
+
+                 // TransactionTable update from
+                 Transactions fromTransactions = Transactions.builder()
+                         .accountNumber(from.getAccountNumber())
+                         .amount(amount)
+                         .transactionType(TransactionType.Transfer)
+                         .transactionDate(LocalDate.now())
+                         .description("Withdrawal from account for transfer")
+                         .BankAccount(from)
+                         .relativeAccountNumber(to.getAccountNumber())
+                         .build();
+
+                 try {
+                     fromTransactions = transactionRepository.save(fromTransactions);
+                     ReceiptGenerator.generatrReceipt(fromTransactions);
+                 } catch (RuntimeException | IOException e) {
+                     throw new RuntimeException(e);
+                 }
+
+                 //TransactionTable Update To
+                 Transactions toTransaction = Transactions.builder()
+                         .accountNumber(to.getAccountNumber())
+                         .amount(amount)
+                         .transactionType(TransactionType.Transfer)
+                         .transactionDate(LocalDate.now())
+                         .description("deposit to account via transfer")
+                         .BankAccount(to)
+                         .relativeAccountNumber(from.getAccountNumber())
+                         .build();
+
+                  try {
+                      transactionRepository.save(toTransaction);
+                      ReceiptGenerator.generatrReceipt(toTransaction);
+                  } catch (RuntimeException | IOException e) {
+                      throw new RuntimeException(e);
+                  }
+
+
+             }
+
+
+        }
+
+        return "Transfer succesful!\nAmount: ₹ "+amount + "\nReceipt generated!";
+    }
+
+
 }
