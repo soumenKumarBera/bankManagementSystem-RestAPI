@@ -1,0 +1,8 @@
+=============== KB BANK ===============
+Transection Type: Withdrawl
+Transaction Id  : 7
+Account Number  : 544087864700
+Amount          : 500
+Date & Time     : 2026-03-23 & 15:59:43.212225300
+Drescription    : Withdrawal Succesfull
+=========================================
